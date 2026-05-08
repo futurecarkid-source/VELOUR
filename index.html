@@ -1,791 +1,979 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VELOUR — Configurador Visual</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet" />
-  <style>
-    /* ── RESET & BASE ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>VELOUR — Personalización Automotriz Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet" />
 
-    :root {
-      --cream:    #F5F5DC;
-      --cream2:   #EFEFE0;
-      --offwhite: #FAFAF7;
-      --gold:     #C9A96E;
-      --gold2:    #A8874E;
-      --carbon:   #1A1A1A;
-      --mid:      #6B6B6B;
-      --light:    #D4D4C8;
-      --shadow:   rgba(26,26,26,.08);
-      --trans:    .55s cubic-bezier(.77,0,.18,1);
-    }
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+  :root {
+    --cream:    #F5F5DC;
+    --cream-dk: #EDE9CC;
+    --gold:     #B8975A;
+    --gold-lt:  #D4B47A;
+    --graphite: #3A3A3A;
+    --mid:      #7A7A6E;
+    --dark:     #1A1A18;
+    --white:    #FEFEFE;
+    --border:   rgba(184,151,90,0.25);
+    --shadow:   0 8px 48px rgba(58,58,58,0.08);
+    --ease:     cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-    body {
-      background: var(--offwhite);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 300;
-      color: var(--carbon);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+  html { scroll-behavior: smooth; }
 
-    /* ── LOADER ── */
-    #loader {
-      position: fixed; inset: 0;
-      background: var(--carbon);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 9999;
-      transition: opacity .8s ease, visibility .8s ease;
-    }
-    #loader.hide { opacity: 0; visibility: hidden; }
-    .loader-brand {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2rem, 6vw, 4rem);
-      letter-spacing: .35em;
-      color: var(--gold);
-      animation: pulse 1.6s ease-in-out infinite;
-    }
-    @keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--cream);
+    color: var(--graphite);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-    /* ── HERO HEADER ── */
-    header {
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      padding: 4rem 2rem 3rem;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(160deg, var(--cream) 0%, var(--offwhite) 60%);
-      z-index: 0;
-    }
-    header > * { position: relative; z-index: 1; }
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
 
-    .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 7vw, 5rem);
-      font-weight: 300;
-      letter-spacing: .5em;
-      color: var(--carbon);
-      line-height: 1;
-      margin-bottom: .4rem;
-    }
-    .brand-tagline {
-      font-size: .62rem;
-      letter-spacing: .4em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 2.5rem;
-    }
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 28px 60px;
+    background: linear-gradient(to bottom, rgba(245,245,220,0.95) 0%, rgba(245,245,220,0) 100%);
+    backdrop-filter: blur(2px);
+  }
 
-    /* Hero decorative image */
-    .hero-img {
-      width: min(700px, 92vw);
-      height: 200px;
-      object-fit: cover;
-      border-radius: 4px;
-      filter: saturate(.85) brightness(.97);
-      box-shadow: 0 20px 60px var(--shadow);
-      margin-bottom: 2.5rem;
-    }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px; font-weight: 600; letter-spacing: 8px;
+    color: var(--dark); text-transform: uppercase;
+  }
+  .logo span { color: var(--gold); }
 
-    /* ── PROGRESS BAR ── */
-    .progress-wrap {
-      display: flex; align-items: center; justify-content: center;
-      gap: 0; margin-bottom: 3.5rem; padding: 0 1rem;
-    }
-    .step-dot {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 1.5px solid var(--light);
-      background: var(--offwhite);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .6rem; letter-spacing: .1em;
-      color: var(--mid);
-      transition: all var(--trans);
-      position: relative; z-index: 1;
-      cursor: default;
-    }
-    .step-dot.active {
-      border-color: var(--gold);
-      background: var(--gold);
-      color: #fff;
-      box-shadow: 0 0 0 5px rgba(201,169,110,.15);
-    }
-    .step-dot.done {
-      border-color: var(--gold2);
-      background: var(--cream);
-      color: var(--gold2);
-    }
-    .step-line {
-      width: 60px; height: 1px;
-      background: var(--light);
-      transition: background var(--trans);
-    }
-    .step-line.done { background: var(--gold2); }
+  .header-tagline {
+    font-size: 9px; font-weight: 300; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--mid);
+  }
 
-    /* ── STAGE CONTAINER ── */
-    #app {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 0 1.5rem 6rem;
-    }
+  /* ── HERO ── */
+  .hero {
+    position: relative; height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    overflow: hidden;
+  }
 
-    /* Animated stage wrapper */
-    .stage {
-      display: none;
-      animation: fadeUp .55s cubic-bezier(.4,0,.2,1) forwards;
-    }
-    .stage.active { display: block; }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1800&q=80') center/cover no-repeat;
+    filter: brightness(0.18) saturate(0.6);
+  }
 
-    .stage-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      font-weight: 400;
-      letter-spacing: .08em;
-      margin-bottom: .5rem;
-    }
-    .stage-subtitle {
-      font-size: .68rem;
-      letter-spacing: .25em;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 2.5rem;
-    }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center; padding: 0 24px;
+  }
 
-    /* ── STEP 1 — SEGMENT CARDS ── */
-    .segment-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 1rem;
-    }
-    .seg-card {
-      background: var(--offwhite);
-      border: 1.5px solid var(--light);
-      border-radius: 6px;
-      padding: 1.4rem 1rem 1.2rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all var(--trans);
-      position: relative;
-      overflow: hidden;
-    }
-    .seg-card::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, var(--cream), transparent);
-      opacity: 0;
-      transition: opacity var(--trans);
-    }
-    .seg-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 12px 30px var(--shadow); }
-    .seg-card:hover::after { opacity: 1; }
-    .seg-card.selected { border-color: var(--gold); background: var(--cream); box-shadow: 0 8px 24px var(--shadow); }
-    .seg-card.selected::after { opacity: 1; }
-    .seg-icon { font-size: 2rem; margin-bottom: .6rem; display: block; }
-    .seg-label { font-size: .65rem; letter-spacing: .25em; text-transform: uppercase; color: var(--carbon); }
-    .seg-card.selected .seg-label { color: var(--gold2); font-weight: 500; }
+  .hero-eyebrow {
+    font-size: 9px; font-weight: 400; letter-spacing: 6px;
+    text-transform: uppercase; color: var(--gold);
+    margin-bottom: 28px;
+    animation: fadeUp 1s var(--ease) both;
+  }
 
-    /* ── STEP 2 — COLOR ── */
-    .color-section-label {
-      font-size: .6rem; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--mid);
-      margin-bottom: 1rem;
-    }
-    .color-palette {
-      display: flex; flex-wrap: wrap; gap: .85rem;
-      margin-bottom: 2rem;
-    }
-    .color-swatch {
-      width: 44px; height: 44px; border-radius: 50%;
-      cursor: pointer; border: 2.5px solid transparent;
-      transition: all var(--trans);
-      box-shadow: 0 2px 8px rgba(0,0,0,.12);
-      position: relative;
-    }
-    .color-swatch:hover { transform: scale(1.15); }
-    .color-swatch.selected { border-color: var(--gold); box-shadow: 0 0 0 4px rgba(201,169,110,.25), 0 4px 12px rgba(0,0,0,.2); }
-    .color-swatch::after {
-      content: attr(data-name);
-      position: absolute; bottom: -20px; left: 50%;
-      transform: translateX(-50%);
-      font-size: .52rem; letter-spacing: .12em;
-      white-space: nowrap; color: var(--mid);
-      opacity: 0; transition: opacity .2s;
-    }
-    .color-swatch:hover::after { opacity: 1; }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 10vw, 120px); font-weight: 300;
+    line-height: 1; letter-spacing: 16px;
+    color: var(--white); text-transform: uppercase;
+    animation: fadeUp 1s 0.2s var(--ease) both;
+  }
 
-    .custom-color-wrap {
-      display: flex; align-items: center; gap: .8rem;
-      padding: 1rem 1.2rem;
-      background: var(--offwhite);
-      border: 1.5px solid var(--light);
-      border-radius: 6px;
-      transition: border-color var(--trans);
-    }
-    .custom-color-wrap:focus-within { border-color: var(--gold); }
-    .custom-color-wrap input[type="text"] {
-      border: none; background: transparent;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .75rem; letter-spacing: .1em;
-      color: var(--carbon); flex: 1; outline: none;
-    }
-    .custom-color-wrap input[type="text"]::placeholder { color: var(--light); }
-    .custom-color-icon { font-size: .9rem; color: var(--gold); }
+  .hero-sub {
+    font-size: 11px; font-weight: 300; letter-spacing: 3px;
+    text-transform: uppercase; color: rgba(255,255,255,0.45);
+    margin-top: 20px;
+    animation: fadeUp 1s 0.4s var(--ease) both;
+  }
 
-    /* ── STEP 3 — BRAND ── */
-    .select-wrap {
-      position: relative;
-    }
-    .select-wrap select {
-      width: 100%;
-      appearance: none;
-      background: var(--offwhite);
-      border: 1.5px solid var(--light);
-      border-radius: 6px;
-      padding: 1.1rem 3rem 1.1rem 1.4rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .75rem;
-      letter-spacing: .15em;
-      color: var(--carbon);
-      cursor: pointer;
-      outline: none;
-      transition: border-color var(--trans);
-    }
-    .select-wrap select:focus { border-color: var(--gold); }
-    .select-arrow {
-      position: absolute; right: 1.2rem; top: 50%;
-      transform: translateY(-50%);
-      color: var(--gold); pointer-events: none;
-      font-size: .75rem;
-    }
+  .hero-cta {
+    margin-top: 64px;
+    animation: fadeUp 1s 0.6s var(--ease) both;
+  }
 
-    .brand-logo-strip {
-      display: flex; flex-wrap: wrap; gap: .6rem;
-      margin-top: 1.8rem;
-    }
-    .brand-chip {
-      padding: .4rem 1rem;
-      border: 1px solid var(--light);
-      border-radius: 20px;
-      font-size: .58rem;
-      letter-spacing: .2em;
-      text-transform: uppercase;
-      color: var(--mid);
-      background: var(--offwhite);
-      cursor: default;
-      transition: all .3s;
-    }
-    .brand-chip.highlight { border-color: var(--gold); color: var(--gold2); background: var(--cream); }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 16px 48px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 10px; font-weight: 400; letter-spacing: 4px;
+    text-transform: uppercase; text-decoration: none; color: var(--dark);
+    background: var(--gold); border: none; cursor: pointer;
+    transition: all 0.4s var(--ease);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 12px 100%);
+  }
+  .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
 
-    /* ── STEP 4 — SUMMARY ── */
-    .summary-card {
-      background: var(--cream);
-      border: 1px solid var(--light);
-      border-radius: 8px;
-      padding: 2.5rem;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    .summary-card::before {
-      content: 'VELOUR';
-      position: absolute; right: -10px; bottom: -20px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 6rem; letter-spacing: .4em;
-      color: rgba(201,169,110,.08);
-      pointer-events: none;
-    }
-    .summary-row {
-      display: flex; align-items: center;
-      justify-content: space-between;
-      padding: .9rem 0;
-      border-bottom: 1px solid rgba(201,169,110,.2);
-    }
-    .summary-row:last-child { border-bottom: none; }
-    .summary-key {
-      font-size: .58rem; letter-spacing: .3em;
-      text-transform: uppercase; color: var(--mid);
-    }
-    .summary-val {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 500;
-      color: var(--carbon); letter-spacing: .05em;
-    }
-    .color-preview-dot {
-      display: inline-block;
-      width: 14px; height: 14px; border-radius: 50%;
-      margin-right: .5rem; vertical-align: middle;
-      border: 1px solid rgba(0,0,0,.1);
-    }
-    .summary-img {
-      width: 100%; height: 160px;
-      object-fit: cover; border-radius: 4px;
-      margin-bottom: 2rem;
-      filter: saturate(.8);
-    }
+  .hero-scroll {
+    position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeUp 1s 1s var(--ease) both;
+  }
+  .hero-scroll span {
+    font-size: 8px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.3);
+  }
+  .scroll-line {
+    width: 1px; height: 48px; background: linear-gradient(to bottom, rgba(184,151,90,0.6), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
 
-    /* ── BUTTONS ── */
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: .7rem;
-      background: var(--carbon);
-      color: var(--cream);
-      border: none; border-radius: 3px;
-      padding: 1rem 2.2rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .65rem; letter-spacing: .3em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all var(--trans);
-      margin-top: 1.5rem;
-    }
-    .btn-primary:hover { background: var(--gold2); transform: translateY(-2px); box-shadow: 0 10px 24px rgba(168,135,78,.25); }
-    .btn-primary:active { transform: translateY(0); }
+  /* ── FORM SECTION ── */
+  #configurador {
+    position: relative; z-index: 1;
+    padding: 120px 0 80px;
+  }
 
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: transparent;
-      color: var(--mid);
-      border: 1.5px solid var(--light);
-      border-radius: 3px;
-      padding: .85rem 1.8rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .62rem; letter-spacing: .25em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all var(--trans);
-      margin-top: 1.5rem; margin-right: .8rem;
-    }
-    .btn-ghost:hover { border-color: var(--gold); color: var(--gold2); }
+  .section-header {
+    text-align: center; padding: 0 24px; margin-bottom: 80px;
+  }
+  .section-eyebrow {
+    font-size: 9px; font-weight: 400; letter-spacing: 5px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(38px, 5vw, 60px); font-weight: 300;
+    color: var(--dark); letter-spacing: 2px;
+  }
 
-    .btn-whatsapp {
-      display: inline-flex; align-items: center; gap: .7rem;
-      background: #25D366;
-      color: #fff;
-      border: none; border-radius: 3px;
-      padding: 1rem 2.2rem;
-      font-family: 'Montserrat', sans-serif;
-      font-size: .65rem; letter-spacing: .3em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all var(--trans);
-      margin-top: 1.5rem;
-    }
-    .btn-whatsapp:hover { background: #1da851; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(37,211,102,.25); }
+  /* ── PROGRESS ── */
+  .progress-bar {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; margin: 0 auto 80px; max-width: 600px; padding: 0 24px;
+  }
+  .progress-step {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer; flex: 1;
+  }
+  .progress-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--cream-dk); border: 1px solid var(--border);
+    transition: all 0.4s var(--ease);
+    position: relative; z-index: 1;
+  }
+  .progress-step.active .progress-dot,
+  .progress-step.done .progress-dot {
+    background: var(--gold); border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(184,151,90,0.4);
+  }
+  .progress-label {
+    font-size: 7px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--mid); white-space: nowrap;
+    transition: color 0.4s;
+  }
+  .progress-step.active .progress-label { color: var(--gold); }
+  .progress-connector {
+    flex: 1; height: 1px; background: var(--border);
+    margin-bottom: 18px; max-width: 60px;
+  }
+  .progress-connector.done { background: var(--gold); }
 
-    .btn-row { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+  /* ── STEPS WRAPPER ── */
+  .steps-wrapper {
+    max-width: 1000px; margin: 0 auto; padding: 0 24px;
+    position: relative;
+  }
 
-    /* ── DIVIDER ── */
-    .gold-divider {
-      width: 40px; height: 1px;
-      background: var(--gold);
-      margin: 1.5rem 0;
-    }
+  .step {
+    display: none; opacity: 0;
+    transition: opacity 0.5s var(--ease);
+  }
+  .step.active { display: block; opacity: 0; animation: fadeIn 0.5s var(--ease) forwards; }
 
-    /* ── FOOTER ── */
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: .55rem;
-      letter-spacing: .3em;
-      color: var(--light);
-      text-transform: uppercase;
-    }
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 4vw, 42px); font-weight: 300;
+    color: var(--dark); letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .step-sub {
+    font-size: 10px; font-weight: 300; letter-spacing: 2px;
+    text-transform: uppercase; color: var(--mid); margin-bottom: 52px;
+  }
 
-    /* ── TOAST ── */
-    #toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: var(--carbon);
-      color: var(--cream);
-      padding: .85rem 2rem;
-      border-radius: 3px;
-      font-size: .62rem; letter-spacing: .2em;
-      transition: transform .4s cubic-bezier(.4,0,.2,1);
-      z-index: 1000; white-space: nowrap;
-    }
-    #toast.show { transform: translateX(-50%) translateY(0); }
+  /* ── STEP 1: SEGMENT CARDS ── */
+  .segment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 48px;
+  }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 520px) {
-      .segment-grid { grid-template-columns: repeat(2, 1fr); }
-      .step-line { width: 30px; }
-      .summary-card { padding: 1.5rem; }
-    }
-  </style>
+  .segment-card {
+    position: relative; overflow: hidden; cursor: pointer;
+    border: 1px solid var(--border); background: var(--white);
+    transition: all 0.4s var(--ease);
+    aspect-ratio: 4/3;
+  }
+  .segment-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: var(--shadow); }
+  .segment-card.selected { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold); }
+
+  .segment-card img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.65) saturate(0.7);
+    transition: filter 0.4s;
+  }
+  .segment-card:hover img, .segment-card.selected img { filter: brightness(0.5) saturate(0.8); }
+
+  .segment-label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 16px 18px;
+    background: linear-gradient(to top, rgba(26,26,24,0.85) 0%, transparent 100%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-weight: 400; color: var(--white);
+    letter-spacing: 1px;
+  }
+  .segment-card.selected::after {
+    content: '✓';
+    position: absolute; top: 12px; right: 12px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--gold); color: var(--dark);
+    font-size: 12px; display: flex; align-items: center; justify-content: center;
+    font-family: 'Montserrat', sans-serif; font-weight: 600;
+  }
+
+  /* ── STEP 2: COLORS ── */
+  .color-palette {
+    display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 40px;
+  }
+  .color-swatch {
+    position: relative; width: 52px; height: 52px; border-radius: 50%;
+    cursor: pointer; border: 2px solid transparent;
+    transition: all 0.3s var(--ease); box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .color-swatch:hover { transform: scale(1.15); }
+  .color-swatch.selected { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,151,90,0.3); }
+  .color-swatch .swatch-label {
+    position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+    font-size: 7px; letter-spacing: 1px; text-transform: uppercase; color: var(--mid);
+    white-space: nowrap;
+  }
+
+  .color-custom-wrap {
+    margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--border);
+  }
+  .custom-color-label {
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mid); margin-bottom: 16px;
+  }
+  .custom-color-row {
+    display: flex; align-items: center; gap: 20px;
+  }
+  input[type="color"] {
+    width: 52px; height: 52px; border: 1px solid var(--border); padding: 4px;
+    background: var(--white); cursor: pointer; border-radius: 50%;
+  }
+
+  /* ── ELEGANT INPUT ── */
+  .field-group { margin-bottom: 32px; }
+  .field-label {
+    display: block; font-size: 9px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--mid); margin-bottom: 10px;
+  }
+  .field-input, .field-select, .field-textarea {
+    width: 100%; padding: 14px 0;
+    font-family: 'Cormorant Garamond', serif; font-size: 18px;
+    color: var(--dark); background: transparent;
+    border: none; border-bottom: 1px solid var(--border);
+    outline: none; transition: border-color 0.3s;
+  }
+  .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: var(--gold); }
+  .field-input.error, .field-select.error { border-color: #c0392b; }
+  .field-error {
+    font-size: 8px; letter-spacing: 1px; color: #c0392b;
+    margin-top: 6px; display: none;
+  }
+  .field-input.error ~ .field-error { display: block; }
+  .field-select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23B8975A' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; }
+  .field-textarea { resize: vertical; min-height: 120px; padding-top: 14px; }
+
+  .form-two-col {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+  }
+  @media(max-width:600px) { .form-two-col { grid-template-columns: 1fr; } }
+
+  .privacy-note {
+    margin-top: 32px; padding: 20px 24px;
+    border-left: 2px solid var(--gold); background: rgba(184,151,90,0.05);
+    font-size: 10px; font-weight: 300; letter-spacing: 1px; color: var(--mid);
+    line-height: 1.7;
+  }
+  .privacy-note strong { color: var(--gold); font-weight: 500; }
+
+  /* ── STEP 6: SUMMARY ── */
+  .summary-card {
+    border: 1px solid var(--border); background: var(--white);
+    padding: 48px; margin-bottom: 40px;
+    position: relative; overflow: hidden;
+  }
+  .summary-card::before {
+    content: 'VELOUR';
+    position: absolute; top: 24px; right: 32px;
+    font-family: 'Cormorant Garamond', serif; font-size: 72px;
+    font-weight: 300; color: rgba(184,151,90,0.06); letter-spacing: 8px;
+  }
+  .summary-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+  }
+  @media(max-width:600px){ .summary-grid { grid-template-columns: 1fr; } }
+  .summary-item {}
+  .summary-item-label {
+    font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 6px;
+  }
+  .summary-item-value {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px;
+    font-weight: 400; color: var(--dark);
+  }
+  .summary-color-preview {
+    display: inline-block; width: 18px; height: 18px; border-radius: 50%;
+    vertical-align: middle; margin-right: 8px; border: 1px solid var(--border);
+  }
+  .summary-divider {
+    height: 1px; background: var(--border); margin: 32px 0;
+  }
+
+  /* ── NAVIGATION ── */
+  .step-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border);
+  }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 0; background: none; border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 9px;
+    font-weight: 400; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--mid); transition: color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--graphite); }
+  .btn-ghost:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-next {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 40px; background: var(--dark); border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 9px;
+    font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--cream); transition: all 0.4s var(--ease);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 100%, 10px 100%);
+  }
+  .btn-next:hover { background: var(--gold); color: var(--dark); }
+
+  .btn-whatsapp {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 48px; background: var(--gold); border: none; cursor: pointer;
+    font-family: 'Montserrat', sans-serif; font-size: 10px;
+    font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--dark); text-decoration: none;
+    transition: all 0.4s var(--ease);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 12px 100%);
+  }
+  .btn-whatsapp:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(184,151,90,0.3); }
+
+  /* ── SUCCESS OVERLAY ── */
+  #success-overlay {
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--cream);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s var(--ease);
+  }
+  #success-overlay.visible { opacity: 1; pointer-events: all; }
+  .check-circle {
+    width: 80px; height: 80px; border-radius: 50%;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 40px;
+    animation: none;
+  }
+  #success-overlay.visible .check-circle {
+    animation: checkPop 0.6s var(--ease) both;
+  }
+  .check-svg { width: 36px; height: 36px; stroke: var(--gold); fill: none; stroke-width: 2; }
+  .success-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 42px;
+    font-weight: 300; color: var(--dark); letter-spacing: 4px;
+    margin-bottom: 12px; opacity: 0;
+    animation: none;
+  }
+  #success-overlay.visible .success-title {
+    animation: fadeUp 0.6s 0.3s var(--ease) forwards;
+  }
+  .success-sub {
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); opacity: 0;
+    animation: none;
+  }
+  #success-overlay.visible .success-sub {
+    animation: fadeUp 0.6s 0.5s var(--ease) forwards;
+  }
+
+  /* ── DECORATIVE IMAGE STRIP ── */
+  .image-strip {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    height: 280px; overflow: hidden; margin: 80px 0 0;
+  }
+  .image-strip-item {
+    overflow: hidden;
+  }
+  .image-strip-item img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: brightness(0.8) saturate(0.6);
+    transition: all 0.8s var(--ease);
+  }
+  .image-strip-item:hover img { filter: brightness(0.9) saturate(1); transform: scale(1.03); }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 60px; text-align: center; border-top: 1px solid var(--border);
+    background: var(--dark);
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 300; letter-spacing: 10px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 16px;
+  }
+  .footer-copy {
+    font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.25);
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.15); }
+  }
+  @keyframes checkPop {
+    0%   { transform: scale(0); opacity: 0; }
+    70%  { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @media(max-width: 768px) {
+    header { padding: 20px 24px; }
+    .image-strip { display: none; }
+    .summary-card { padding: 28px; }
+  }
+</style>
 </head>
 <body>
 
-<!-- ░░ LOADER ░░ -->
-<div id="loader"><span class="loader-brand">VELOUR</span></div>
-
-<!-- ░░ HEADER ░░ -->
+<!-- ── HEADER ── -->
 <header>
-  <p class="brand-name">VELOUR</p>
-  <p class="brand-tagline">Configurador Visual · Edición Exclusiva</p>
-  <img
-    class="hero-img"
-    src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=1200&q=80&auto=format&fit=crop"
-    alt="Automóvil de lujo"
-  />
-
-  <!-- Progress Indicator -->
-  <div class="progress-wrap" id="progress">
-    <div class="step-dot active" id="dot-1">01</div>
-    <div class="step-line" id="line-1"></div>
-    <div class="step-dot" id="dot-2">02</div>
-    <div class="step-line" id="line-2"></div>
-    <div class="step-dot" id="dot-3">03</div>
-    <div class="step-line" id="line-3"></div>
-    <div class="step-dot" id="dot-4">04</div>
-  </div>
+  <div class="logo">V<span>E</span>LOUR</div>
+  <div class="header-tagline">Personalización Automotriz Premium</div>
 </header>
 
-<!-- ░░ APP CONTAINER ░░ -->
-<main id="app">
-
-  <!-- ═══ PASO 1 — SEGMENTO ═══ -->
-  <section class="stage active" id="stage-1">
-    <p class="stage-subtitle">Paso 01 de 04</p>
-    <h1 class="stage-title">Selecciona tu segmento</h1>
-    <div class="gold-divider"></div>
-    <div class="segment-grid" id="segment-grid">
-      <!-- Cards generadas por JS -->
-    </div>
-    <div class="btn-row">
-      <button class="btn-primary" id="btn-next-1" disabled>
-        Continuar <span>→</span>
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Experiencia de Configuración</p>
+    <h1 class="hero-title">VELOUR</h1>
+    <p class="hero-sub">Define tu vehículo. Define tu identidad.</p>
+    <div class="hero-cta">
+      <button class="btn-primary" onclick="document.getElementById('configurador').scrollIntoView({behavior:'smooth'})">
+        Iniciar Configuración
+        <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
     </div>
-  </section>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Explorar</span>
+  </div>
+</section>
 
-  <!-- ═══ PASO 2 — COLOR ═══ -->
-  <section class="stage" id="stage-2">
-    <p class="stage-subtitle">Paso 02 de 04</p>
-    <h1 class="stage-title">Elige el color</h1>
-    <div class="gold-divider"></div>
+<!-- ── IMAGE STRIP ── -->
+<div class="image-strip">
+  <div class="image-strip-item"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80" alt="Detalle auto" /></div>
+  <div class="image-strip-item"><img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=600&q=80" alt="Auto de lujo" /></div>
+  <div class="image-strip-item"><img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?w=600&q=80" alt="Interior auto" /></div>
+</div>
 
-    <p class="color-section-label">Paleta Premium</p>
-    <div class="color-palette" id="color-palette"></div>
+<!-- ── CONFIGURADOR ── -->
+<section id="configurador">
+  <div class="section-header">
+    <p class="section-eyebrow">Su Configuración Personal</p>
+    <h2 class="section-title">Diseñado Para Usted</h2>
+  </div>
 
-    <p class="color-section-label">Color personalizado</p>
-    <div class="custom-color-wrap">
-      <span class="custom-color-icon">✦</span>
-      <input type="text" id="custom-color-input" placeholder="Ej: Azul Noche, Verde Forestal, Rojo Cardenal…" maxlength="40" />
+  <!-- PROGRESS -->
+  <div class="progress-bar" id="progressBar">
+    <div class="progress-step active" data-step="1">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Segmento</span>
     </div>
-
-    <div class="btn-row">
-      <button class="btn-ghost" onclick="goToStage(1)">← Volver</button>
-      <button class="btn-primary" id="btn-next-2" disabled>
-        Continuar <span>→</span>
-      </button>
+    <div class="progress-connector"></div>
+    <div class="progress-step" data-step="2">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Color</span>
     </div>
-  </section>
-
-  <!-- ═══ PASO 3 — MARCA ═══ -->
-  <section class="stage" id="stage-3">
-    <p class="stage-subtitle">Paso 03 de 04</p>
-    <h1 class="stage-title">Marca de referencia</h1>
-    <div class="gold-divider"></div>
-
-    <div class="select-wrap">
-      <select id="brand-select">
-        <option value="" disabled selected>— Selecciona una marca —</option>
-      </select>
-      <span class="select-arrow">▾</span>
+    <div class="progress-connector"></div>
+    <div class="progress-step" data-step="3">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Marca</span>
     </div>
-
-    <div class="brand-logo-strip" id="brand-chips"></div>
-
-    <div class="btn-row">
-      <button class="btn-ghost" onclick="goToStage(2)">← Volver</button>
-      <button class="btn-primary" id="btn-next-3" disabled>
-        Ver resumen <span>→</span>
-      </button>
+    <div class="progress-connector"></div>
+    <div class="progress-step" data-step="4">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Detalles</span>
     </div>
-  </section>
+    <div class="progress-connector"></div>
+    <div class="progress-step" data-step="5">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Datos</span>
+    </div>
+    <div class="progress-connector"></div>
+    <div class="progress-step" data-step="6">
+      <div class="progress-dot"></div>
+      <span class="progress-label">Resumen</span>
+    </div>
+  </div>
 
-  <!-- ═══ PASO 4 — RESUMEN ═══ -->
-  <section class="stage" id="stage-4">
-    <p class="stage-subtitle">Paso 04 de 04</p>
-    <h1 class="stage-title">Tu configuración</h1>
-    <div class="gold-divider"></div>
+  <!-- STEPS -->
+  <div class="steps-wrapper">
 
-    <img
-      id="summary-img"
-      class="summary-img"
-      src=""
-      alt="Vista de referencia"
-    />
-
-    <div class="summary-card">
-      <div class="summary-row">
-        <span class="summary-key">Segmento</span>
-        <span class="summary-val" id="sum-segment">—</span>
+    <!-- STEP 1 -->
+    <div class="step active" id="step-1">
+      <h3 class="step-title">Segmento de Vehículo</h3>
+      <p class="step-sub">Seleccione la categoría que mejor define su estilo</p>
+      <div class="segment-grid">
+        <div class="segment-card" data-value="Hatchback" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=75" alt="Hatchback" />
+          <div class="segment-label">Hatchback</div>
+        </div>
+        <div class="segment-card" data-value="Sedán" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=400&q=75" alt="Sedán" />
+          <div class="segment-label">Sedán</div>
+        </div>
+        <div class="segment-card" data-value="Deportivo" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=75" alt="Deportivo" />
+          <div class="segment-label">Deportivo</div>
+        </div>
+        <div class="segment-card" data-value="Hiper-deportivo" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=400&q=75" alt="Hiper-deportivo" />
+          <div class="segment-label">Hiper-deportivo</div>
+        </div>
+        <div class="segment-card" data-value="Pickup" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1590510317500-8f1a45ab6206?w=400&q=75" alt="Pickup" />
+          <div class="segment-label">Pickup</div>
+        </div>
+        <div class="segment-card" data-value="SUV" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=400&q=75" alt="SUV" />
+          <div class="segment-label">SUV</div>
+        </div>
+        <div class="segment-card" data-value="Wagon" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&q=75" alt="Wagon" />
+          <div class="segment-label">Wagon</div>
+        </div>
+        <div class="segment-card" data-value="City Car" onclick="selectSegment(this)">
+          <img src="https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=400&q=75" alt="City Car" />
+          <div class="segment-label">City Car</div>
+        </div>
       </div>
-      <div class="summary-row">
-        <span class="summary-key">Color</span>
-        <span class="summary-val" id="sum-color">—</span>
-      </div>
-      <div class="summary-row">
-        <span class="summary-key">Marca de referencia</span>
-        <span class="summary-val" id="sum-brand">—</span>
+      <div class="step-nav">
+        <button class="btn-ghost" disabled>← Anterior</button>
+        <button class="btn-next" onclick="nextStep(1)">
+          Continuar
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
       </div>
     </div>
 
-    <div class="btn-row">
-      <button class="btn-ghost" onclick="goToStage(3)">← Editar</button>
-      <button class="btn-whatsapp" id="btn-whatsapp">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Enviar por WhatsApp
-      </button>
+    <!-- STEP 2 -->
+    <div class="step" id="step-2">
+      <h3 class="step-title">Selección de Color</h3>
+      <p class="step-sub">Elija el acabado que define su personalidad</p>
+      <div class="color-palette">
+        <div class="color-swatch selected" data-color="Blanco Perla" style="background:#F0EFE7;" onclick="selectColor(this)"><span class="swatch-label">Blanco Perla</span></div>
+        <div class="color-swatch" data-color="Negro Profundo" style="background:#1A1A18;" onclick="selectColor(this)"><span class="swatch-label">Negro Profundo</span></div>
+        <div class="color-swatch" data-color="Plata Glaciar" style="background:#C8C8C4;" onclick="selectColor(this)"><span class="swatch-label">Plata Glaciar</span></div>
+        <div class="color-swatch" data-color="Gris Cuarzo" style="background:#7A7A6E;" onclick="selectColor(this)"><span class="swatch-label">Gris Cuarzo</span></div>
+        <div class="color-swatch" data-color="Azul Zafiro" style="background:#1E3A5F;" onclick="selectColor(this)"><span class="swatch-label">Azul Zafiro</span></div>
+        <div class="color-swatch" data-color="Rojo Carmesí" style="background:#8B1A1A;" onclick="selectColor(this)"><span class="swatch-label">Rojo Carmesí</span></div>
+        <div class="color-swatch" data-color="Verde Británico" style="background:#1F3D2C;" onclick="selectColor(this)"><span class="swatch-label">Verde Británico</span></div>
+        <div class="color-swatch" data-color="Dorado Champagne" style="background:#B8975A;" onclick="selectColor(this)"><span class="swatch-label">Dorado Champagne</span></div>
+        <div class="color-swatch" data-color="Bronce Ahumado" style="background:#6B4F3A;" onclick="selectColor(this)"><span class="swatch-label">Bronce Ahumado</span></div>
+        <div class="color-swatch" data-color="Violeta Noche" style="background:#2D1B4E;" onclick="selectColor(this)"><span class="swatch-label">Violeta Noche</span></div>
+      </div>
+      <div class="color-custom-wrap">
+        <p class="custom-color-label">O especifique un color personalizado</p>
+        <div class="custom-color-row">
+          <input type="color" id="customColorPicker" value="#B8975A" oninput="updateCustomColor(this)" />
+          <div class="field-group" style="flex:1; margin-bottom:0;">
+            <input type="text" class="field-input" id="customColorText" placeholder="Ej: Verde Militar, Azul Noche Estelar…" oninput="setCustomColorText(this.value)" />
+          </div>
+        </div>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="prevStep(2)">← Anterior</button>
+        <button class="btn-next" onclick="nextStep(2)">
+          Continuar
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
     </div>
-  </section>
 
-</main>
+    <!-- STEP 3 -->
+    <div class="step" id="step-3">
+      <h3 class="step-title">Marca de Referencia</h3>
+      <p class="step-sub">¿Qué insignia inspira su configuración?</p>
+      <div class="field-group">
+        <label class="field-label" for="marcaSelect">Marca de Referencia</label>
+        <select class="field-select" id="marcaSelect">
+          <option value="">— Seleccione una marca —</option>
+          <optgroup label="Ultra Lujo">
+            <option>Rolls-Royce</option>
+            <option>Bentley</option>
+            <option>Bugatti</option>
+            <option>Pagani</option>
+            <option>Koenigsegg</option>
+          </optgroup>
+          <optgroup label="Lujo Premium">
+            <option>Mercedes-Benz</option>
+            <option>BMW</option>
+            <option>Audi</option>
+            <option>Lexus</option>
+            <option>Genesis</option>
+          </optgroup>
+          <optgroup label="Deportivo">
+            <option>Ferrari</option>
+            <option>Lamborghini</option>
+            <option>Porsche</option>
+            <option>McLaren</option>
+            <option>Aston Martin</option>
+            <option>Maserati</option>
+          </optgroup>
+          <optgroup label="Premium">
+            <option>Volvo</option>
+            <option>Land Rover</option>
+            <option>Jaguar</option>
+            <option>Infiniti</option>
+            <option>Acura</option>
+            <option>Cadillac</option>
+          </optgroup>
+          <optgroup label="Mainstream">
+            <option>Toyota</option>
+            <option>Honda</option>
+            <option>Ford</option>
+            <option>Chevrolet</option>
+            <option>Volkswagen</option>
+            <option>Hyundai</option>
+            <option>Kia</option>
+            <option>Mazda</option>
+            <option>Nissan</option>
+            <option>Otra</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="prevStep(3)">← Anterior</button>
+        <button class="btn-next" onclick="nextStep(3)">
+          Continuar
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
 
-<!-- ░░ TOAST ░░ -->
-<div id="toast">Selecciona una opción para continuar</div>
+    <!-- STEP 4 -->
+    <div class="step" id="step-4">
+      <h3 class="step-title">Especificaciones Adicionales</h3>
+      <p class="step-sub">Cuéntenos sus preferencias — cada detalle importa</p>
+      <div class="field-group">
+        <label class="field-label" for="descripcion">Descripción del Diseño (opcional)</label>
+        <textarea class="field-textarea" id="descripcion" placeholder="Detalles de acabados, materiales, inspiraciones, modificaciones específicas, referencias visuales…"></textarea>
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="prevStep(4)">← Anterior</button>
+        <button class="btn-next" onclick="nextStep(4)">
+          Continuar
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
 
-<!-- ░░ FOOTER ░░ -->
-<footer>© 2025 Velour Studio · Diseño Automotriz Exclusivo</footer>
+    <!-- STEP 5 -->
+    <div class="step" id="step-5">
+      <h3 class="step-title">Sus Datos de Contacto</h3>
+      <p class="step-sub">Información necesaria para procesar su cotización</p>
+      <div class="form-two-col">
+        <div class="field-group">
+          <label class="field-label" for="nombres">Nombres y Apellidos</label>
+          <input type="text" class="field-input" id="nombres" placeholder="Como aparece en su documento" />
+          <span class="field-error">Este campo es obligatorio</span>
+        </div>
+        <div class="field-group">
+          <label class="field-label" for="cedula">Número de Cédula</label>
+          <input type="text" class="field-input" id="cedula" placeholder="Ej: 1012345678" />
+          <span class="field-error">Este campo es obligatorio</span>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="email">Correo Electrónico</label>
+        <input type="email" class="field-input" id="email" placeholder="correo@ejemplo.com" />
+        <span class="field-error" id="email-error">Ingrese un correo electrónico válido</span>
+      </div>
+      <div class="privacy-note">
+        <strong>🔒 Sus datos están protegidos</strong> y solo se utilizarán para procesar esta cotización personalizada. VELOUR garantiza la confidencialidad de su información de acuerdo con las políticas de privacidad vigentes.
+      </div>
+      <div class="step-nav">
+        <button class="btn-ghost" onclick="prevStep(5)">← Anterior</button>
+        <button class="btn-next" onclick="submitForm()">
+          Procesar Solicitud
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
 
-<!-- ════════════════════════════════════════════
-     JAVASCRIPT — Lógica principal
-════════════════════════════════════════════ -->
+    <!-- STEP 6 -->
+    <div class="step" id="step-6">
+      <h3 class="step-title">Su Configuración</h3>
+      <p class="step-sub">Resumen completo de su solicitud de cotización</p>
+      <div class="summary-card">
+        <div class="summary-grid">
+          <div class="summary-item">
+            <p class="summary-item-label">Segmento</p>
+            <p class="summary-item-value" id="sum-segmento">—</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-item-label">Marca de Referencia</p>
+            <p class="summary-item-value" id="sum-marca">—</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-item-label">Color Seleccionado</p>
+            <p class="summary-item-value" id="sum-color">—</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-item-label">Solicitante</p>
+            <p class="summary-item-value" id="sum-nombre">—</p>
+          </div>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-item">
+          <p class="summary-item-label">Especificaciones Adicionales</p>
+          <p class="summary-item-value" id="sum-descripcion" style="font-size:16px; line-height:1.6; color:var(--mid);">—</p>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <p class="summary-item-label">Correo Electrónico</p>
+            <p class="summary-item-value" id="sum-email" style="font-size:16px;">—</p>
+          </div>
+          <div class="summary-item">
+            <p class="summary-item-label">Cédula</p>
+            <p class="summary-item-value" id="sum-cedula" style="font-size:16px;">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; align-items:center; justify-content:center; gap:24px; flex-wrap:wrap;">
+        <button class="btn-ghost" onclick="prevStep(6)">← Modificar</button>
+        <a id="whatsapp-btn" class="btn-whatsapp" href="#" target="_blank">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Enviar por WhatsApp
+        </a>
+      </div>
+    </div>
+
+  </div><!-- steps-wrapper -->
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-logo">VELOUR</div>
+  <p class="footer-copy">© 2025 Velour — Personalización Automotriz Premium. Todos los derechos reservados.</p>
+</footer>
+
+<!-- ── SUCCESS OVERLAY ── -->
+<div id="success-overlay">
+  <div class="check-circle">
+    <svg class="check-svg" viewBox="0 0 36 36">
+      <path d="M8 18l8 8L28 10" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </div>
+  <h2 class="success-title">Solicitud Procesada</h2>
+  <p class="success-sub">Preparando su resumen de configuración…</p>
+</div>
+
 <script>
-  /* ─── CONFIGURACIÓN GLOBAL ─── */
-  const WHATSAPP_NUMBER = '573332320399'; // ← Reemplaza con el número real (formato internacional, sin +)
-
-  /* ─── DATOS ─── */
-  const SEGMENTS = [
-    { label: 'Hatchback',      icon: '🚗', img: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&q=80' },
-    { label: 'Sedán',          icon: '🚘', img: 'https://images.unsplash.com/photo-1553440569-bcc63803a83d?w=800&q=80' },
-    { label: 'Deportivo',      icon: '🏎️', img: 'https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=800&q=80' },
-    { label: 'Hiper-deportivo',icon: '⚡', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80' },
-    { label: 'Pickup',         icon: '🛻', img: 'https://images.unsplash.com/photo-1590362891991-f776e747a588?w=800&q=80' },
-    { label: 'SUV',            icon: '🚙', img: 'https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?w=800&q=80' },
-    { label: 'Wagon',          icon: '🚐', img: 'https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=800&q=80' },
-    { label: 'City Car',       icon: '🏙️', img: 'https://images.unsplash.com/photo-1541899481282-d53bffe3c35d?w=800&q=80' },
-  ];
-
-  const COLORS = [
-    { name: 'Blanco Ártico',   hex: '#F0EFEA' },
-    { name: 'Negro Obsidiana', hex: '#1C1C1E' },
-    { name: 'Gris Platino',    hex: '#9E9E9E' },
-    { name: 'Gris Grafito',    hex: '#4A4A4A' },
-    { name: 'Plata Estelar',   hex: '#C0C0C0' },
-    { name: 'Azul Noche',      hex: '#1B2A4A' },
-    { name: 'Azul Zafiro',     hex: '#1A4A8A' },
-    { name: 'Azul Glaciar',    hex: '#7EB8D4' },
-    { name: 'Rojo Cardenal',   hex: '#8B1A1A' },
-    { name: 'Rojo Racing',     hex: '#C0392B' },
-    { name: 'Verde Forestal',  hex: '#2C4A3E' },
-    { name: 'Dorado Champán',  hex: '#C9A96E' },
-    { name: 'Bronce Toscano',  hex: '#8B6914' },
-    { name: 'Arena Sahara',    hex: '#C9B99A' },
-    { name: 'Naranja Volcán',  hex: '#CC5500' },
-    { name: 'Malva Imperial',  hex: '#6B4E71' },
-  ];
-
-  const BRANDS = [
-    'Alfa Romeo','Aston Martin','Audi','Bentley','BMW',
-    'Bugatti','Chevrolet','Ferrari','Ford','Honda',
-    'Hyundai','Jaguar','Koenigsegg','Lamborghini','Land Rover',
-    'Lexus','Lotus','Maserati','McLaren','Mercedes-Benz',
-    'Pagani','Porsche','Rimac','Rolls-Royce','Tesla',
-    'Toyota','Volkswagen','Volvo',
-  ];
-
-  /* ─── ESTADO ─── */
+  // ── STATE ──
   const state = {
-    step: 1,
-    segment: null,
-    segmentImg: null,
-    color: null,
-    colorHex: null,
-    brand: null,
+    segmento: '',
+    color: 'Blanco Perla',
+    colorHex: '#F0EFE7',
+    marca: '',
+    descripcion: '',
+    nombre: '',
+    cedula: '',
+    email: ''
   };
 
-  /* ─── UTILIDAD: Toast ─── */
-  const toast = document.getElementById('toast');
-  function showToast(msg, dur = 2200) {
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), dur);
+  let currentStep = 1;
+
+  // ── SEGMENT ──
+  function selectSegment(card) {
+    document.querySelectorAll('.segment-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    state.segmento = card.dataset.value;
   }
 
-  /* ─── LOADER ─── */
-  window.addEventListener('load', () => {
-    setTimeout(() => document.getElementById('loader').classList.add('hide'), 1200);
-  });
-
-  /* ─── RENDERIZAR PASO 1: SEGMENTOS ─── */
-  (function renderSegments() {
-    const grid = document.getElementById('segment-grid');
-    SEGMENTS.forEach(({ label, icon, img }) => {
-      const card = document.createElement('div');
-      card.className = 'seg-card';
-      card.innerHTML = `<span class="seg-icon">${icon}</span><span class="seg-label">${label}</span>`;
-      card.addEventListener('click', () => {
-        document.querySelectorAll('.seg-card').forEach(c => c.classList.remove('selected'));
-        card.classList.add('selected');
-        state.segment = label;
-        state.segmentImg = img;
-        document.getElementById('btn-next-1').disabled = false;
-      });
-      grid.appendChild(card);
-    });
-  })();
-
-  /* ─── RENDERIZAR PASO 2: COLORES ─── */
-  (function renderColors() {
-    const palette = document.getElementById('color-palette');
-    COLORS.forEach(({ name, hex }) => {
-      const swatch = document.createElement('div');
-      swatch.className = 'color-swatch';
-      swatch.style.background = hex;
-      swatch.setAttribute('data-name', name);
-      swatch.addEventListener('click', () => {
-        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-        swatch.classList.add('selected');
-        state.color = name;
-        state.colorHex = hex;
-        document.getElementById('custom-color-input').value = '';
-        document.getElementById('btn-next-2').disabled = false;
-      });
-      palette.appendChild(swatch);
-    });
-
-    // Input de color personalizado
-    const customInput = document.getElementById('custom-color-input');
-    customInput.addEventListener('input', () => {
-      const val = customInput.value.trim();
-      if (val.length > 0) {
-        document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
-        state.color = val;
-        state.colorHex = '#888888';
-        document.getElementById('btn-next-2').disabled = false;
-      } else {
-        if (!state.color || !COLORS.find(c => c.name === state.color)) {
-          document.getElementById('btn-next-2').disabled = true;
-          state.color = null; state.colorHex = null;
-        }
-      }
-    });
-  })();
-
-  /* ─── RENDERIZAR PASO 3: MARCAS ─── */
-  (function renderBrands() {
-    const sel = document.getElementById('brand-select');
-    const chips = document.getElementById('brand-chips');
-
-    BRANDS.forEach(brand => {
-      const opt = document.createElement('option');
-      opt.value = brand; opt.textContent = brand;
-      sel.appendChild(opt);
-
-      const chip = document.createElement('div');
-      chip.className = 'brand-chip';
-      chip.textContent = brand;
-      chips.appendChild(chip);
-    });
-
-    sel.addEventListener('change', () => {
-      state.brand = sel.value;
-      document.getElementById('btn-next-3').disabled = !state.brand;
-      // Highlight chip
-      document.querySelectorAll('.brand-chip').forEach(c => {
-        c.classList.toggle('highlight', c.textContent === state.brand);
-      });
-    });
-  })();
-
-  /* ─── NAVEGACIÓN ENTRE PASOS ─── */
-  function goToStage(n) {
-    // Ocultar stage actual
-    document.querySelector('.stage.active')?.classList.remove('active');
-    // Activar nuevo
-    document.getElementById(`stage-${n}`).classList.add('active');
-    state.step = n;
-    updateProgress(n);
-
-    // Scroll al top suavemente
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-
-    // Si vamos al resumen, poblar datos
-    if (n === 4) populateSummary();
+  // ── COLOR ──
+  function selectColor(swatch) {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    swatch.classList.add('selected');
+    state.color = swatch.dataset.color;
+    state.colorHex = swatch.style.background;
+    document.getElementById('customColorText').value = '';
   }
 
-  /* ─── ACTUALIZAR BARRA DE PROGRESO ─── */
-  function updateProgress(current) {
-    for (let i = 1; i <= 4; i++) {
-      const dot = document.getElementById(`dot-${i}`);
-      dot.classList.remove('active', 'done');
-      if (i < current)  dot.classList.add('done');
-      if (i === current) dot.classList.add('active');
-    }
-    for (let i = 1; i <= 3; i++) {
-      const line = document.getElementById(`line-${i}`);
-      line.classList.toggle('done', i < current);
+  function updateCustomColor(picker) {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    state.colorHex = picker.value;
+    if (!document.getElementById('customColorText').value) {
+      state.color = picker.value;
     }
   }
 
-  /* ─── POBLAR RESUMEN ─── */
-  function populateSummary() {
-    document.getElementById('sum-segment').textContent = state.segment || '—';
+  function setCustomColorText(val) {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+    state.color = val || document.getElementById('customColorPicker').value;
+    state.colorHex = document.getElementById('customColorPicker').value;
+  }
+
+  // ── NAVIGATION ──
+  function goToStep(n) {
+    document.getElementById('step-' + currentStep).classList.remove('active');
+    currentStep = n;
+    const el = document.getElementById('step-' + n);
+    el.classList.add('active');
+    updateProgress();
+    document.getElementById('configurador').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function nextStep(from) {
+    // Validations per step
+    if (from === 1 && !state.segmento) {
+      alert('Por favor seleccione un segmento de vehículo para continuar.');
+      return;
+    }
+    if (from === 3) {
+      const marca = document.getElementById('marcaSelect').value;
+      if (!marca) { alert('Por favor seleccione una marca de referencia.'); return; }
+      state.marca = marca;
+    }
+    if (from === 4) {
+      state.descripcion = document.getElementById('descripcion').value;
+    }
+    goToStep(from + 1);
+  }
+
+  function prevStep(from) {
+    goToStep(from - 1);
+  }
+
+  // ── PROGRESS ──
+  function updateProgress() {
+    const steps = document.querySelectorAll('.progress-step');
+    const connectors = document.querySelectorAll('.progress-connector');
+    steps.forEach((s, i) => {
+      const n = i + 1;
+      s.classList.remove('active', 'done');
+      if (n === currentStep) s.classList.add('active');
+      else if (n < currentStep) s.classList.add('done');
+    });
+    connectors.forEach((c, i) => {
+      c.classList.toggle('done', i + 1 < currentStep);
+    });
+  }
+
+  // ── FORM SUBMIT ──
+  function submitForm() {
+    const nombres = document.getElementById('nombres');
+    const cedula  = document.getElementById('cedula');
+    const email   = document.getElementById('email');
+    let valid = true;
+
+    // Reset errors
+    [nombres, cedula, email].forEach(f => f.classList.remove('error'));
+
+    if (!nombres.value.trim()) { nombres.classList.add('error'); valid = false; }
+    if (!cedula.value.trim())  { cedula.classList.add('error');  valid = false; }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email.value.trim() || !emailRegex.test(email.value.trim())) {
+      email.classList.add('error');
+      document.getElementById('email-error').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('email-error').style.display = 'none';
+    }
+
+    if (!valid) return;
+
+    state.nombre = nombres.value.trim();
+    state.cedula = cedula.value.trim();
+    state.email  = email.value.trim();
+
+    // Show success overlay
+    const overlay = document.getElementById('success-overlay');
+    overlay.classList.add('visible');
+
+    setTimeout(() => {
+      overlay.classList.remove('visible');
+      buildSummary();
+      goToStep(6);
+    }, 2600);
+  }
+
+  // ── SUMMARY ──
+  function buildSummary() {
+    document.getElementById('sum-segmento').textContent = state.segmento || '—';
+    document.getElementById('sum-marca').textContent    = state.marca    || '—';
+    document.getElementById('sum-nombre').textContent   = state.nombre   || '—';
+    document.getElementById('sum-email').textContent    = state.email    || '—';
+    document.getElementById('sum-cedula').textContent   = state.cedula   || '—';
+    document.getElementById('sum-descripcion').textContent = state.descripcion || 'Sin especificaciones adicionales.';
 
     const colorEl = document.getElementById('sum-color');
-    colorEl.innerHTML = `<span class="color-preview-dot" style="background:${state.colorHex || '#888'}"></span>${state.color || '—'}`;
+    colorEl.innerHTML = `<span class="summary-color-preview" style="background:${state.colorHex};"></span>${state.color}`;
 
-    document.getElementById('sum-brand').textContent = state.brand || '—';
-
-    const img = document.getElementById('summary-img');
-    img.src = state.segmentImg || 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&q=80';
+    // Build WhatsApp link
+    const notas = state.descripcion || 'Ninguna';
+    const msg = encodeURIComponent(
+      `Hola VELOUR, deseo solicitar una cotización:\n` +
+      `*${state.nombre}* (Cédula: ${state.cedula}).\n` +
+      `Vehículo: ${state.segmento} ${state.marca} en color ${state.color}.\n` +
+      `Notas adicionales: ${notas}.`
+    );
+    document.getElementById('whatsapp-btn').href = `https://wa.me/573000000000?text=${msg}`;
   }
 
-  /* ─── WHATSAPP ─── */
-  /*
-   * Nota técnica: Se usa wa.me (enlace directo) porque:
-   * - No requiere autenticación ni aprobación de Meta.
-   * - Es ideal para volúmenes bajos/medios (B2C directos).
-   * - La API Business (Cloud API) es mejor para escalar, automatizar,
-   *   usar chatbots y CRM integration, pero requiere cuenta verificada.
-   * Para escalar esta plataforma, se recomienda migrar a la Cloud API
-   * cuando los envíos superen ~200 conversaciones/día.
-   */
-  document.getElementById('btn-whatsapp').addEventListener('click', () => {
-    if (!state.segment || !state.color || !state.brand) {
-      showToast('Por favor completa todos los pasos.'); return;
-    }
-    const msg = `Hola, me interesa un diseño personalizado: ${state.segment} en color ${state.color} con referencia de marca ${state.brand}.`;
-    const encoded = encodeURIComponent(msg);
-    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
-    window.open(url, '_blank', 'noopener,noreferrer');
-  });
-
-  /* ─── BOTONES NEXT ─── */
-  document.getElementById('btn-next-1').addEventListener('click', () => {
-    if (!state.segment) { showToast('Selecciona un segmento.'); return; }
-    goToStage(2);
-  });
-  document.getElementById('btn-next-2').addEventListener('click', () => {
-    if (!state.color) { showToast('Elige un color o escribe uno personalizado.'); return; }
-    goToStage(3);
-  });
-  document.getElementById('btn-next-3').addEventListener('click', () => {
-    if (!state.brand) { showToast('Selecciona una marca de referencia.'); return; }
-    goToStage(4);
-  });
+  // ── INIT ──
+  updateProgress();
 </script>
 </body>
 </html>
